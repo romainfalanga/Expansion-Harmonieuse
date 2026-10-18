@@ -1,0 +1,16 @@
+{
+  "name": "expansion-harmonieuse-2027",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs"
+  },
+  "dependencies": {
+    "babylonjs": "9.31.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

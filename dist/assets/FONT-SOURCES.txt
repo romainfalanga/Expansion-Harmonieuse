@@ -1,0 +1,4 @@
+URW Base35 : https://github.com/ArtifexSoftware/urw-base35-fonts
+Copyright URW Software. Licence AGPL-3 avec exception, voir FONT-LICENSE.txt.
+Les fichiers OTF originaux accompagnent les WOFF dans font-sources/.
+Conversion de conteneur sans retouche des glyphes avec fontTools.ttLib.TTFont : font.flavor = "woff" ; font.save(destination).
