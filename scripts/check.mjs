@@ -1,63 +1,68 @@
 import assert from 'node:assert/strict';
 import { readFile, access } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import vm from 'node:vm';
-import { createRequire } from 'node:module';
 import { spawnSync } from 'node:child_process';
+import { frameAt, chapterPosition, CHAPTERS } from '../dist/scene-timeline.js';
+import './check-journey.mjs';
 
 const root = resolve(import.meta.dirname, '..');
-const publicDir = resolve(root, 'dist');
-const html = await readFile(resolve(publicDir, 'index.html'), 'utf8');
-const ids = Array.from(html.matchAll(/\bid="([^"]+)"/g), match => match[1]);
-assert.equal(ids.length, new Set(ids).size, 'Duplicate HTML ids');
+const dir = resolve(root, 'dist');
+const html = await readFile(resolve(dir, 'index.html'), 'utf8');
+const ids = Array.from(html.matchAll(/\bid="([^"]+)"/g), m => m[1]);
+assert.equal(ids.length, new Set(ids).size, 'Duplicate ids');
 assert.equal((html.match(/<h1\b/g) || []).length, 1);
 for (const match of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
   const target = match[1];
-  if (target.startsWith('#')) assert(ids.includes(target.slice(1)), 'Missing anchor: ' + target);
-  else if (!/^https?:/.test(target)) await access(resolve(publicDir, target));
+  if (target.startsWith('#')) assert(ids.includes(target.slice(1)), 'Missing anchor ' + target);
+  else if (!/^https?:/.test(target)) await access(resolve(dir, target));
 }
-for (const id of ['projet', 'education', 'plateforme', 'monnaie', 'retraites', 'democratie', 'calendrier']) assert(ids.includes(id));
-for (const phrase of ['Si je suis élu président, c’est pour qu’il n’y en ait plus.', 'revenus internationaux', 'investis automatiquement', 'sortie de l’Union européenne', 'Aucun rendement']) assert(html.includes(phrase), 'Missing programme content: ' + phrase);
-for (const phrase of ['Crédit intellectuel', 'candidature imaginaire', 'forcément bénéfiques']) assert(!html.includes(phrase));
-assert.equal((html.match(/data-chapter="/g) || []).length, 5);
-assert.equal((html.match(/data-go="/g) || []).length, 5);
-assert(!html.includes('onwheel=') && !html.includes('ontouchmove='));
+for (const match of html.matchAll(/srcset="([^"]+)"/g)) {
+  for (const item of match[1].split(',')) await access(resolve(dir, item.trim().split(/\s+/)[0]));
+}
+const sections = ['projet', 'plateforme', 'videographie', 'monnaie', 'echanges', 'harmonie', 'democratie', 'transition', 'education', 'calendrier'];
+let previous = 0;
+for (const id of sections) {
+  const position = html.indexOf('id="' + id + '"');
+  assert(position > previous, 'Programme section order: ' + id);
+  previous = position;
+}
+const opening = html.slice(html.indexOf('<section class="journey"'), html.indexOf('<section class="section wrap concept"'));
+for (const removed of ['Romain Falanga', 'Présidentielle 2027', 'Lire le programme', 'Faites défiler', 'La curiosité ouvre le chemin']) assert(!opening.includes(removed), 'Removed opening copy reappeared');
+const chapters = Array.from(opening.matchAll(/<article[^>]+data-chapter="(\d)"[^>]*>([\s\S]*?)<\/article>/g));
+assert.equal(chapters.length, CHAPTERS);
+assert(chapters[1][2].includes('Si je suis élu président, c’est pour qu’il n’y en ait plus.'));
+assert.equal((opening.match(/data-go="/g) || []).length, CHAPTERS);
+for (const obsolete of ['retraite', 'ETF', 'investis automatiquement', 'Crédit intellectuel', 'candidature imaginaire', 'Anticiper la transition.', 'BABYLON', 'world.js']) assert(!html.includes(obsolete), 'Obsolete public content: ' + obsolete);
+for (const phrase of ['utilisables immédiatement à l’international', 'ne sont pas dépensables en France', 'Aucune conversion', 'leur état d’avancement', 'leur utilisation par d’autres personnes', 'La plateforme est le socle', 'La vidéographie', 'chaque mois', 'Les ventes n’ajoutent', 'point de départ', 'septembre 2027', 'groupes plus nombreux', 'stages de transition IA', 'sortie de l’Union européenne']) assert(html.includes(phrase), 'Missing programme requirement: ' + phrase);
 for (const file of ['styles.css', 'journey.css']) {
-  const css = await readFile(resolve(publicDir, file), 'utf8');
+  const css = await readFile(resolve(dir, file), 'utf8');
   assert.equal((css.match(/\{/g) || []).length, (css.match(/\}/g) || []).length);
-  for (const match of css.matchAll(/url\(['"]?([^)'"]+)/g)) await access(resolve(publicDir, match[1]));
+  for (const match of css.matchAll(/url\(['"]?([^)'"]+)/g)) await access(resolve(dir, match[1]));
 }
-for (const file of ['app.js', 'journey.js', 'world.js']) {
-  const checked = spawnSync(process.execPath, ['--check', resolve(publicDir, file)], { encoding: 'utf8' });
+for (const file of ['app.js', 'journey.js', 'scene-timeline.js']) {
+  const checked = spawnSync(process.execPath, ['--check', resolve(dir, file)], { encoding: 'utf8' });
   assert.equal(checked.status, 0, checked.stderr);
 }
-const sandbox = {};
-vm.runInNewContext(await readFile(resolve(publicDir, 'world.js'), 'utf8'), sandbox);
-const World = sandbox.ExpansionWorld;
-let previousZ = Infinity;
-for (const value of [0, 0.2, 0.4, 0.6, 0.8, 1]) {
-  for (const portrait of [true, false]) {
-    const c = World.cameraState(value, portrait);
-    Object.values(c).forEach(number => assert(Number.isFinite(number)));
-  }
-  const c = World.cameraState(value, false);
-  assert(c.z < previousZ, 'Camera must travel through the scene');
-  previousZ = c.z;
+const motion = await readFile(resolve(dir, 'journey.js'), 'utf8');
+assert(!/addEventListener\(['"](?:wheel|touchmove)/.test(motion), 'Native scroll must remain available');
+assert(motion.includes('prefers-reduced-motion'));
+for (let i = 0; i < CHAPTERS; i++) assert.equal(frameAt(chapterPosition(i)).textIndex, i, 'Chapter destination selects wrong text');
+assert.equal(frameAt(0).index, 0);
+assert.equal(frameAt(1).index, 3);
+for (const p of [-10, 0, 0.1, 0.25, 0.5, 0.75, 0.999, 1, 10, NaN]) {
+  const frame = frameAt(p);
+  assert(frame.index >= 0 && frame.index < CHAPTERS);
+  assert(Number.isFinite(frame.local) && Number.isFinite(frame.blend));
 }
-const require = createRequire(import.meta.url);
-let B;
-try { B = require('babylonjs'); }
-catch { B = require(resolve(publicDir, 'assets/vendor/babylon.js')); }
-const engine = new B.NullEngine({ renderWidth: 1200, renderHeight: 750, textureSize: 512 });
-const world = World.create(B, null, { engine });
-assert.equal(world.scene.metadata.chapters, 5);
-assert(world.scene.meshes.length > 90);
-for (const p of [0, 0.23, 0.45, 0.68, 0.9, 1]) {
-  world.update(p, false);
-  assert(Number.isFinite(world.camera.position.z));
+let imageBytes = 0;
+for (const name of ['vision', 'collectif', 'pensees', 'echanges']) for (const suffix of ['', '-mobile']) {
+  const file = await readFile(resolve(dir, 'assets/illustrations/' + name + suffix + '.webp'));
+  assert.equal(file.subarray(0, 4).toString(), 'RIFF');
+  assert.equal(file.subarray(8, 12).toString(), 'WEBP');
+  assert(file.length > 10000 && file.length < 300000);
+  imageBytes += file.length;
 }
-world.update(0.5, true);
-world.dispose();
-assert.equal(world.scene.isDisposed, true);
-engine.dispose();
-console.log('Programme, links, assets, camera travel and 3D scene lifecycle checked.');
+assert(imageBytes < 1500000, 'Narrative image payload too large');
+const pkg = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8'));
+assert(!pkg.dependencies?.babylonjs);
+console.log('Programme coverage, corrections, chapter order, navigation, reading mode and local assets checked. Images: ' + Math.round(imageBytes / 1024) + ' KiB.');

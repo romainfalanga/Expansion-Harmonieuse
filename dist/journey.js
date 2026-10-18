@@ -1,23 +1,21 @@
-(() => {
-  'use strict';
-  const journey = document.querySelector('.journey');
-  if (!journey) return;
+import { CHAPTERS, clamp, frameAt, chapterPosition } from './scene-timeline.js';
+
+const journey = document.querySelector('.journey');
+if (journey) {
   const panels = Array.from(journey.querySelectorAll('.journey-panel'));
+  const scenes = Array.from(journey.querySelectorAll('.journey-scene'));
+  const sceneHost = journey.querySelector('.journey-scenes');
   const buttons = Array.from(journey.querySelectorAll('[data-go]'));
   const modeButton = journey.querySelector('.journey-mode');
-  const canvas = journey.querySelector('canvas');
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const shortScreen = window.matchMedia('(max-height: 520px)');
-  let storedSimple = false;
-  try { storedSimple = localStorage.getItem('expansion-reading-mode') === 'simple'; } catch {}
-  let reading = reduced.matches || shortScreen.matches || storedSimple;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const shortScreen = matchMedia('(max-height: 550px)');
+  let preferred = false;
+  try { preferred = localStorage.getItem('expansion-reading-mode') === 'simple'; } catch {}
+  let reading = reduced.matches || shortScreen.matches || preferred;
   let activeIndex = 0;
-  let progress = 0;
+  let progress = null;
   let raf = 0;
-  let world = null;
-  let worldPromise = null;
   let disposed = false;
-  const clamp = n => Math.max(0, Math.min(1, n));
 
   function setChapter(index) {
     activeIndex = index;
@@ -38,68 +36,58 @@
     raf = 0;
     if (disposed) return;
     const rect = journey.getBoundingClientRect();
-    const visible = rect.bottom > 80 && rect.top < innerHeight;
+    const visible = rect.bottom > 90 && rect.top < innerHeight;
     document.body.classList.toggle('in-journey', visible);
-    if (reading) return;
-    const distance = Math.max(1, rect.height - innerHeight);
-    const target = clamp(-rect.top / distance);
-    progress = Math.abs(target - progress) < 0.00025 ? target : progress + (target - progress) * 0.17;
-    journey.style.setProperty('--journey-progress', String(progress));
-    journey.style.setProperty('--portal-scale', String(1 + progress * 6));
-    journey.style.setProperty('--portal-turn', String(progress * 55) + 'deg');
-    setChapter(Math.min(panels.length - 1, Math.floor(progress * panels.length)));
-    if (world && visible && !document.hidden) {
-      try { world.update(progress, innerWidth < 721); }
-      catch { journey.classList.remove('has-world'); journey.dataset.world = 'fallback'; world.dispose(); world = null; }
+    if (reading) {
+      if (visible) {
+        const middle = innerHeight * 0.48;
+        const found = panels.findIndex(panel => {
+          const box = panel.getBoundingClientRect();
+          return box.top <= middle && box.bottom > middle;
+        });
+        if (found >= 0 && found !== activeIndex) setChapter(found);
+      }
+      return;
     }
-    if (visible && Math.abs(target - progress) > 0.00025) schedule();
+    const target = clamp(-rect.top / Math.max(1, rect.height - innerHeight));
+    if (progress === null || !visible) progress = target;
+    else progress = Math.abs(target - progress) < 0.0003 ? target : progress + (target - progress) * 0.18;
+    const frame = frameAt(progress);
+    journey.style.setProperty('--journey-progress', String(progress));
+    scenes.forEach((scene, index) => {
+      const opacity = index === frame.index ? frame.blend : index === frame.index - 1 ? 1 - frame.blend : 0;
+      const local = index === frame.index ? frame.local : 1;
+      scene.style.opacity = String(opacity);
+      scene.style.transform = 'translate3d(' + (-local * 1.4) + '%, ' + (-local * 0.5) + '%, 0) scale(' + (1.025 + local * 0.17) + ')';
+    });
+    if (frame.textIndex !== activeIndex) setChapter(frame.textIndex);
+    if (visible && !document.hidden && Math.abs(target - progress) > 0.0003) schedule();
   }
   function schedule() { if (!raf && !disposed) raf = requestAnimationFrame(render); }
 
-  function loadWorld() {
-    if (worldPromise || reading || disposed) return;
-    worldPromise = new Promise((resolve, reject) => {
-      if (window.BABYLON) { resolve(); return; }
-      const script = document.createElement('script');
-      script.src = './assets/vendor/babylon.js';
-      script.async = true;
-      script.onload = resolve;
-      script.onerror = reject;
-      document.head.appendChild(script);
-    }).then(() => {
-      if (disposed) return;
-      world = window.ExpansionWorld.create(window.BABYLON, canvas);
-      world.update(progress, innerWidth < 721);
-      journey.dataset.world = 'ready';
-      journey.classList.add('has-world');
-      schedule();
-    }).catch(() => {
-      journey.dataset.world = 'fallback';
-      journey.classList.remove('has-world');
-    });
-  }
-
   function applyMode(next, preservePosition) {
-    const previousChapter = activeIndex;
+    const previous = activeIndex;
     reading = next;
+    scenes.forEach((scene, index) => {
+      scene.setAttribute('aria-hidden', 'true');
+      if (reading) panels[index].prepend(scene);
+      else sceneHost.append(scene);
+    });
     journey.classList.toggle('journey-reading', reading);
     journey.classList.toggle('is-enhanced', !reading);
     modeButton.textContent = reading ? 'Activer l’immersion' : 'Lecture simple';
     modeButton.setAttribute('aria-pressed', String(reading));
-    setChapter(previousChapter);
+    progress = null;
+    setChapter(previous);
     if (preservePosition) {
       requestAnimationFrame(() => {
-        if (reading) panels[previousChapter].scrollIntoView({ block: 'start', behavior: 'instant' });
+        if (reading) panels[previous].scrollIntoView({ block: 'start', behavior: 'instant' });
         else {
-          const r = journey.getBoundingClientRect();
-          window.scrollTo({ top: scrollY + r.top + (r.height - innerHeight) * Math.min(0.99, previousChapter / panels.length + 0.04), behavior: 'instant' });
+          const rect = journey.getBoundingClientRect();
+          scrollTo({ top: scrollY + rect.top + (rect.height - innerHeight) * chapterPosition(previous), behavior: 'instant' });
         }
         schedule();
       });
-    }
-    if (!reading) {
-      loadWorld();
-      if (world) requestAnimationFrame(() => { world.resize(); schedule(); });
     }
     schedule();
   }
@@ -110,24 +98,26 @@
   });
   buttons.forEach(button => button.addEventListener('click', () => {
     const index = Number(button.dataset.go);
-    if (reading) { panels[index].scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
-    const r = journey.getBoundingClientRect();
-    const p = index === 0 ? 0 : index / panels.length + 0.065;
-    window.scrollTo({ top: scrollY + r.top + (r.height - innerHeight) * p, behavior: reduced.matches ? 'instant' : 'smooth' });
+    if (reading) panels[index].scrollIntoView({ block: 'start', behavior: reduced.matches ? 'instant' : 'smooth' });
+    else {
+      const rect = journey.getBoundingClientRect();
+      scrollTo({ top: scrollY + rect.top + (rect.height - innerHeight) * chapterPosition(index), behavior: reduced.matches ? 'instant' : 'smooth' });
+    }
   }));
-  window.addEventListener('scroll', schedule, { passive: true });
-  window.addEventListener('resize', () => {
-    if (world) world.resize();
+  addEventListener('scroll', schedule, { passive: true });
+  addEventListener('resize', () => {
     if (shortScreen.matches && !reading) applyMode(true, true);
     schedule();
   }, { passive: true });
-  document.addEventListener('visibilitychange', schedule);
   reduced.addEventListener('change', event => { if (event.matches) applyMode(true, true); });
-  window.addEventListener('pagehide', event => {
+  document.addEventListener('visibilitychange', schedule);
+  addEventListener('pagehide', event => {
     if (event.persisted) return;
     disposed = true;
     if (raf) cancelAnimationFrame(raf);
-    if (world) world.dispose();
   });
-  applyMode(reading, false);
-})();
+  addEventListener('pageshow', event => {
+    if (event.persisted) { disposed = false; schedule(); }
+  });
+  if (panels.length === CHAPTERS && scenes.length === CHAPTERS) applyMode(reading, false);
+}

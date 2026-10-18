@@ -1,10 +1,13 @@
-# Expansion Harmonieuse · Romain Falanga 2027
+# Expansion Harmonieuse · Faire mieux.
 
-Site de présentation du programme pour la présidentielle 2027. Devise : **Faire mieux.**
+Site de présentation du concept et du programme de Romain Falanga pour la présidentielle 2027.
 
-Le site présente le programme, un parcours immersif piloté par le défilement et la feuille de route. La plateforme, la monnaie et les mécanismes institutionnels décrits sont des propositions du programme.
+La page commence par quatre scènes illustrées : vision, gouvernance collective, plateforme des pensées et des idées, monnaie. Le programme détaillé présente d’abord le concept et sa plateforme, puis la monnaie et les échanges avant la définition de l’harmonie, les institutions et la transition.
 
-## Développement et publication
+## Publication
+Le dépôt est relié au projet Netlify **expansionharmonieuse** : https://expansionharmonieuse.netlify.app
+
+Chaque mise à jour de la branche `main` déclenche la compilation et la publication via Netlify. Le fichier `netlify.toml` définit Node 22, la commande `npm run check && npm run build` et le dossier `dist`.
 
 ```sh
 npm install
@@ -12,12 +15,12 @@ npm run check
 npm run build
 ```
 
-Netlify : branche de production `main`, commande `npm run check && npm run build`, dossier publié `dist`, Node.js 22. Le fichier `netlify.toml` définit ces réglages. Une fois le dépôt relié au projet Netlify, chaque commit sur `main` déclenche une nouvelle publication.
+Aucune clé API ni aucun moteur 3D n’est nécessaire. Les images sont hébergées localement, avec des versions légères pour mobile. L’immersion utilise le défilement natif, des fondus et une avancée dans les illustrations ; les gestes et le clavier restent disponibles. Une lecture simple et les préférences de réduction des mouvements sont prises en compte.
 
-Babylon.js 9.31.0 est installé à la compilation puis copié dans le dossier publié. Aucun service IA ni aucune clé API n’est nécessaire. Les animations suivent le défilement natif et une lecture simple est disponible. Les préférences de réduction des mouvements sont respectées ; un visuel SVG est utilisé en repli si le rendu 3D est indisponible.
+## Contenu
+La plateforme, la monnaie et les mécanismes institutionnels sont des propositions du programme. Le site ne simule aucun utilisateur, revenu, compteur de projet ou résultat économique. Les euros issus des ventes sont présentés comme utilisables immédiatement à l’international, sans conversion en Expansion Harmonieuse et sans dépense en France.
 
-Les contrôles vérifient le contenu, les ressources, les ancres, le déplacement de caméra et le cycle de vie de la scène avec un moteur de test sans affichage.
+## Contrôles et licences
+Les contrôles vérifient l’ordre du programme, la suppression des propositions remplacées, les ressources, les ancres, le passage entre les chapitres et le mode de lecture sans mouvements. Ils ne remplacent pas une vérification sur appareil.
 
-## Licences
-
-Babylon.js : Apache-2.0. Les polices URW Base35 et leur licence sont fournies dans `dist/assets`.
+Les quatre scènes sont des illustrations originales de projection. Les polices URW Base35 et leur licence sont fournies dans `dist/assets`.

@@ -1,7 +1,6 @@
 .netlify/
 .DS_Store
 node_modules/
-dist/assets/vendor/babylon.js
 *.log
 
 # Private preview workspace metadata
