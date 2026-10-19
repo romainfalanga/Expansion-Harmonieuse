@@ -8,7 +8,9 @@ Une seule ouverture introduit le projet. Le programme et son ambition précèden
 
 La plateforme relie le réseau des pensées au réseau des projets. La vidéographie se décline en Observation et amélioration de soi, Réflexions, et Idées et projets. Chaque projet peut être compris à travers son histoire et ses étapes.
 
-Le programme propose la psychologie dès le lycée et un enseignement approfondi du fonctionnement de l’Univers. Pour les élèves comme pour les adultes, la vidéographie constitue un pilier proposé de la quantification de l’expansion harmonieuse par l’intelligence artificielle générale gouvernante.
+Le programme propose la psychologie dès le lycée, un enseignement approfondi du fonctionnement de l’Univers et des cours d’IA et de vibe coding : structurer un projet, tester une première version en local, puis faire vérifier le travail par des développeurs professionnels avant sa mise en service. Pour les élèves comme pour les adultes, la vidéographie constitue un pilier proposé de la quantification de l’expansion harmonieuse par l’intelligence artificielle générale gouvernante.
+
+La partie monétaire propose aussi une pondération selon le contexte d’émission de chaque unité, liée au stock actuel et au stock lors de sa création. La formule et son articulation avec les échanges et les prix restent à définir.
 
 Les mécanismes présentés sont des propositions du programme. Aucun utilisateur, projet réel, score d’harmonie, revenu ou résultat économique n’est simulé.
 
