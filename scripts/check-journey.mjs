@@ -24,11 +24,10 @@ function setup(reducedMotion = false) {
   }
   const journey = new Element(); journey.dataset = {};
   const panels = Array.from({ length: 4 }, () => new Element());
-  const scenes = Array.from({ length: 4 }, () => new Element());
   const buttons = Array.from({ length: 4 }, (_, i) => { const e = new Element(); e.dataset = { go: String(i) }; return e; });
-  const host = new Element(); const mode = new Element();
-  journey.querySelectorAll = selector => selector === '.journey-panel' ? panels : selector === '.journey-scene' ? scenes : buttons;
-  journey.querySelector = selector => selector === '.journey-scenes' ? host : mode;
+  const mode = new Element();
+  journey.querySelectorAll = selector => selector === '.journey-panel' ? panels : buttons;
+  journey.querySelector = () => mode;
   journey.getBoundingClientRect = () => { const height = context.innerHeight * (journey.classList.contains('journey-reading') ? 3.2 : 5.2); return { top: -context.scrollY, bottom: height - context.scrollY, height }; };
   panels.forEach((panel, i) => {
     panel.getBoundingClientRect = () => ({ top: i * 600 - context.scrollY, bottom: (i + 1) * 600 - context.scrollY });
@@ -51,7 +50,7 @@ function setup(reducedMotion = false) {
   vm.runInNewContext(source, context);
   const flush = () => { let count = 0; while (queue.size && count++ < 150) { const jobs = Array.from(queue.values()); queue.clear(); jobs.forEach(fn => fn()); } assert(count < 150, 'Animation did not settle'); };
   flush();
-  return { panels, scenes, buttons, mode, host, journey, context, events, flush, reduced };
+  return { panels, buttons, mode, journey, context, events, flush, reduced };
 }
 const app = setup();
 assert(app.journey.classList.contains('is-enhanced'));
@@ -63,9 +62,7 @@ assert.equal(app.buttons[1].attrs.get('aria-current'), 'step');
 app.mode.click(); app.flush();
 assert(app.journey.classList.contains('journey-reading'));
 assert(app.panels.every(panel => !panel.inert && panel.attrs.get('aria-hidden') === 'false'));
-assert(app.scenes.every((scene, i) => scene.parent === app.panels[i]));
 app.mode.click(); app.flush();
-assert(app.scenes.every(scene => scene.parent === app.host));
 for (const index of [0, 2, 3]) { app.buttons[index].click(); app.flush(); assert.equal(app.journey.dataset.chapter, String(index)); }
 const simple = setup(true);
 assert(simple.journey.classList.contains('journey-reading'));

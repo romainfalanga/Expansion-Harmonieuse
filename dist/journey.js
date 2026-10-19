@@ -3,12 +3,10 @@ import { CHAPTERS, clamp, frameAt, chapterPosition } from './scene-timeline.js';
 const journey = document.querySelector('.journey');
 if (journey) {
   const panels = Array.from(journey.querySelectorAll('.journey-panel'));
-  const scenes = Array.from(journey.querySelectorAll('.journey-scene'));
-  const sceneHost = journey.querySelector('.journey-scenes');
   const buttons = Array.from(journey.querySelectorAll('[data-go]'));
   const modeButton = journey.querySelector('.journey-mode');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const shortScreen = matchMedia('(max-height: 550px)');
+  const shortScreen = matchMedia('(max-height: 620px)');
   let preferred = false;
   try { preferred = localStorage.getItem('expansion-reading-mode') === 'simple'; } catch {}
   let reading = reduced.matches || shortScreen.matches || preferred;
@@ -54,11 +52,8 @@ if (journey) {
     else progress = Math.abs(target - progress) < 0.0003 ? target : progress + (target - progress) * 0.18;
     const frame = frameAt(progress);
     journey.style.setProperty('--journey-progress', String(progress));
-    scenes.forEach((scene, index) => {
-      const opacity = index === frame.index ? frame.blend : index === frame.index - 1 ? 1 - frame.blend : 0;
-      const local = index === frame.index ? frame.local : 1;
-      scene.style.opacity = String(opacity);
-      scene.style.transform = 'translate3d(' + (-local * 1.4) + '%, ' + (-local * 0.5) + '%, 0) scale(' + (1.025 + local * 0.17) + ')';
+    panels.forEach((panel, index) => {
+      panel.style.setProperty('--chapter-progress', String(index === frame.textIndex ? frame.local : 0));
     });
     if (frame.textIndex !== activeIndex) setChapter(frame.textIndex);
     if (visible && !document.hidden && Math.abs(target - progress) > 0.0003) schedule();
@@ -68,14 +63,9 @@ if (journey) {
   function applyMode(next, preservePosition) {
     const previous = activeIndex;
     reading = next;
-    scenes.forEach((scene, index) => {
-      scene.setAttribute('aria-hidden', 'true');
-      if (reading) panels[index].prepend(scene);
-      else sceneHost.append(scene);
-    });
     journey.classList.toggle('journey-reading', reading);
     journey.classList.toggle('is-enhanced', !reading);
-    modeButton.textContent = reading ? 'Activer l’immersion' : 'Lecture simple';
+    modeButton.textContent = reading ? 'Activer le parcours' : 'Lecture simple';
     modeButton.setAttribute('aria-pressed', String(reading));
     progress = null;
     setChapter(previous);
@@ -119,5 +109,5 @@ if (journey) {
   addEventListener('pageshow', event => {
     if (event.persisted) { disposed = false; schedule(); }
   });
-  if (panels.length === CHAPTERS && scenes.length === CHAPTERS) applyMode(reading, false);
+  if (panels.length === CHAPTERS) applyMode(reading, false);
 }

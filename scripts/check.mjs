@@ -32,9 +32,9 @@ const chapters = Array.from(opening.matchAll(/<article[^>]+data-chapter="(\d)"[^
 assert.equal(chapters.length, CHAPTERS);
 assert(chapters[1][2].includes('Si je suis élu président, c’est pour qu’il n’y en ait plus.'));
 assert.equal((opening.match(/data-go="/g) || []).length, CHAPTERS);
-for (const obsolete of ['retraite', 'ETF', 'investis automatiquement', 'Crédit intellectuel', 'candidature imaginaire', 'Anticiper la transition.', 'BABYLON', 'world.js']) assert(!html.includes(obsolete), 'Obsolete public content: ' + obsolete);
+for (const obsolete of ['retraite', 'ETF', 'investis automatiquement', 'candidature imaginaire', 'Anticiper la transition.', 'BABYLON', 'world.js']) assert(!html.includes(obsolete), 'Obsolete public content: ' + obsolete);
 for (const phrase of ['utilisables immédiatement à l’international', 'ne sont pas dépensables en France', 'Aucune conversion', 'leur état d’avancement', 'leur utilisation par d’autres personnes', 'La plateforme est le socle', 'La vidéographie', 'chaque mois', 'Les ventes n’ajoutent', 'point de départ', 'septembre 2027', 'groupes plus nombreux', 'stages de transition IA', 'sortie de l’Union européenne']) assert(html.includes(phrase), 'Missing programme requirement: ' + phrase);
-for (const file of ['styles.css', 'journey.css']) {
+for (const file of ['styles.css', 'programme.css', 'journey.css']) {
   const css = await readFile(resolve(dir, file), 'utf8');
   assert.equal((css.match(/\{/g) || []).length, (css.match(/\}/g) || []).length);
   for (const match of css.matchAll(/url\(['"]?([^)'"]+)/g)) await access(resolve(dir, match[1]));
@@ -54,15 +54,18 @@ for (const p of [-10, 0, 0.1, 0.25, 0.5, 0.75, 0.999, 1, 10, NaN]) {
   assert(frame.index >= 0 && frame.index < CHAPTERS);
   assert(Number.isFinite(frame.local) && Number.isFinite(frame.blend));
 }
-let imageBytes = 0;
-for (const name of ['vision', 'collectif', 'pensees', 'echanges']) for (const suffix of ['', '-mobile']) {
-  const file = await readFile(resolve(dir, 'assets/illustrations/' + name + suffix + '.webp'));
-  assert.equal(file.subarray(0, 4).toString(), 'RIFF');
-  assert.equal(file.subarray(8, 12).toString(), 'WEBP');
-  assert(file.length > 10000 && file.length < 300000);
-  imageBytes += file.length;
-}
-assert(imageBytes < 1500000, 'Narrative image payload too large');
+assert(!html.includes('<img'), 'Generated illustrations must not remain in the page');
+assert(!html.includes('assets/illustrations/'));
+assert.equal((opening.match(/class="journey-visual /g) || []).length, 4);
+for (const id of ['branche-soi', 'branche-reflexions', 'branche-projets', 'reseau-pensees', 'reseau-projets', 'quantification-title']) assert(ids.includes(id));
+const video = html.slice(html.indexOf('id="videographie"'), html.indexOf('id="monnaie"'));
+for (const phrase of ['Observation et', 'amélioration de soi', 'Réflexions', 'Idées et projets', 'démarche thérapeutique personnelle', 'les élèves et les adultes', 'Chaque projet possède sa propre vidéographie', 'Son origine', 'Ses étapes', 'Son état actuel', 'intelligence artificielle générale gouvernante', 'quantifier son expansion harmonieuse']) assert(video.includes(phrase), 'Missing videography requirement: ' + phrase);
+const education = html.slice(html.indexOf('id="education"'), html.indexOf('id="calendrier"'));
+for (const phrase of ['Psychologie', 'notre manière de penser', 'notre manière d’exister dans la réalité', 'Observation et amélioration de soi', 'Le fonctionnement<br>de l’Univers']) assert(education.includes(phrase), 'Missing education requirement: ' + phrase);
+const roadmap = html.slice(html.indexOf('id="calendrier"'));
+assert(roadmap.includes('Ajouter les cours de psychologie'));
+assert(roadmap.includes('physique du fonctionnement de l’Univers'));
+assert(roadmap.includes('les élèves et les adultes'));
 const pkg = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8'));
 assert(!pkg.dependencies?.babylonjs);
-console.log('Programme coverage, corrections, chapter order, navigation, reading mode and local assets checked. Images: ' + Math.round(imageBytes / 1024) + ' KiB.');
+console.log('Programme, three branches, networks, school subjects, chapter navigation and local assets checked.');

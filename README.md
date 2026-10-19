@@ -2,12 +2,21 @@
 
 Site de présentation du concept et du programme de Romain Falanga pour la présidentielle 2027.
 
-La page commence par quatre scènes illustrées : vision, gouvernance collective, plateforme des pensées et des idées, monnaie. Le programme détaillé présente d’abord le concept et sa plateforme, puis la monnaie et les échanges avant la définition de l’harmonie, les institutions et la transition.
+L’ouverture présente quatre compositions éditoriales : plateforme, participation continue, trois branches de la vidéographie, quantification et monnaie. Les schémas sont construits en HTML, CSS et SVG. Le site n’utilise aucune photographie générée.
+
+## Programme
+
+La plateforme relie le réseau des pensées au réseau des projets. La vidéographie se décline en Observation et amélioration de soi, Réflexions, et Idées et projets. Chaque projet peut être compris à travers son histoire et ses étapes.
+
+Le programme propose la psychologie dès le lycée et un enseignement approfondi du fonctionnement de l’Univers. La vidéographie constitue un pilier proposé de la quantification de l’expansion harmonieuse par l’intelligence artificielle générale gouvernante, pour les élèves et les adultes.
+
+Les mécanismes présentés sont des propositions du programme. Aucun utilisateur, projet réel, score d’harmonie, revenu ou résultat économique n’est simulé.
 
 ## Publication
-Le dépôt est relié au projet Netlify **expansionharmonieuse** : https://expansionharmonieuse.netlify.app
 
-Chaque mise à jour de la branche `main` déclenche la compilation et la publication via Netlify. Le fichier `netlify.toml` définit Node 22, la commande `npm run check && npm run build` et le dossier `dist`.
+Production : https://expansionharmonieuse.netlify.app
+
+La branche `main` est reliée à Netlify. Le fichier `netlify.toml` définit Node 22, la commande `npm run check && npm run build` et le dossier `dist`.
 
 ```sh
 npm install
@@ -15,12 +24,10 @@ npm run check
 npm run build
 ```
 
-Aucune clé API ni aucun moteur 3D n’est nécessaire. Les images sont hébergées localement, avec des versions légères pour mobile. L’immersion utilise le défilement natif, des fondus et une avancée dans les illustrations ; les gestes et le clavier restent disponibles. Une lecture simple et les préférences de réduction des mouvements sont prises en compte.
-
-## Contenu
-La plateforme, la monnaie et les mécanismes institutionnels sont des propositions du programme. Le site ne simule aucun utilisateur, revenu, compteur de projet ou résultat économique. Les euros issus des ventes sont présentés comme utilisables immédiatement à l’international, sans conversion en Expansion Harmonieuse et sans dépense en France.
+Aucune clé API ni dépendance d’exécution n’est nécessaire. Le parcours suit le défilement natif et conserve une lecture simple, les préférences de réduction des mouvements et la navigation au clavier. Les liens des trois branches conduisent au programme détaillé.
 
 ## Contrôles et licences
-Les contrôles vérifient l’ordre du programme, la suppression des propositions remplacées, les ressources, les ancres, le passage entre les chapitres et le mode de lecture sans mouvements. Ils ne remplacent pas une vérification sur appareil.
 
-Les quatre scènes sont des illustrations originales de projection. Les polices URW Base35 et leur licence sont fournies dans `dist/assets`.
+Les contrôles vérifient le contenu, les trois branches et leurs réseaux, l’histoire des projets, les nouveaux enseignements, les ancres, la navigation entre les chapitres et la lecture sans mouvements. Ils ne remplacent pas une vérification sur appareil.
+
+Les polices URW Base35 et leur licence sont fournies dans `dist/assets`.
