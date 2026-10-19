@@ -28,12 +28,13 @@ const section = id => {
 };
 const opening = section('debut');
 assert(opening.includes('Faire mieux.'));
-for (const phrase of ['connaissance de soi', 'création', 'entraide', 'super intelligence artificielle']) assert(opening.includes(phrase));
+assert(opening.includes('<p class="hero-lead">Préparer la France à l’arrivée de la super intelligence artificielle.</p>'), 'Exact latest opening sentence');
 for (const removed of ['Romain Falanga', 'Présidentielle 2027', 'Lire le programme', 'Faites défiler', 'figure', 'data-chapter', 'journey', '<button', 'Un même mouvement']) assert(!opening.includes(removed), 'Removed opening element: ' + removed);
 for (const removed of ['journey', 'scene-timeline', 'data-chapter', 'Lecture simple', 'profile-avatar', 'profile-sheet', 'retraite', 'ETF', 'candidature imaginaire', 'La curiosité ouvre le chemin', 'Anticiper la transition.', 'BABYLON']) assert(!html.includes(removed), 'Obsolete public content: ' + removed);
-assert.equal((html.match(/Si je suis élu président, c’est pour qu’il n’y en ait plus\./g) || []).length, 1, 'Quote occurs once');
+assert(!html.includes('Si je suis élu président'), 'Removed presidential quote must not return');
+assert(!html.includes('class="section-name"'), 'Removed introductory label');
 const programme = section('programme');
-for (const phrase of ['Si je suis élu président', 'Ce programme', 'capable de tout faire', 'travail ne serait plus nécessaire', 'les jeunes et l’ensemble de la population', 'garder un sens', 'se comprendre et de s’améliorer', 'fin de la fonction présidentielle']) assert(programme.includes(phrase), 'Missing programme introduction: ' + phrase);
+for (const phrase of ['Ce programme', 'capable de tout faire', 'travail ne serait plus nécessaire', 'les jeunes et l’ensemble de la population', 'garder un sens', 'se comprendre et s’améliorer', 'fin de la fonction présidentielle']) assert(programme.includes(phrase), 'Missing programme introduction: ' + phrase);
 const education = section('education');
 assert(education.indexOf('id="stages-ia"') < education.indexOf('class="learning-layout'), 'Internships lead the education section');
 for (const phrase of ['le cœur du modèle', 'concevoir et de mettre en place les automatisations', 'Observer l’entreprise', 'Concevoir les automatisations', 'Les mettre en place', 'psychologie', 'notre manière de penser', 'notre manière d’exister dans la réalité', 'Observation et amélioration de soi', 'fonctionnement de l’Univers', 'Conserver les matières', 'groupes plus nombreux']) {

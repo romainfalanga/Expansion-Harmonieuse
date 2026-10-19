@@ -1,10 +1,9 @@
 @font-face{font-family:Nimbus;src:url('./assets/nimbus-sans.woff') format('woff');font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:Nimbus;src:url('./assets/nimbus-sans-bold.woff') format('woff');font-weight:700;font-style:normal;font-display:swap}
-@font-face{font-family:Gothic;src:url('./assets/urw-gothic-demi.woff') format('woff');font-weight:700;font-style:normal;font-display:swap}
-:root{--white:#fff;--paper:#f5f7fb;--blue:#293fc7;--ink:#13253d;--muted:#536074;--line:#d8dfe9;--body:Nimbus,Arial,sans-serif;--display:Gothic,Nimbus,Arial,sans-serif;--header-height:64px}
+:root{--white:#fff;--paper:#f5f7fb;--blue:#293fc7;--ink:#13253d;--muted:#536074;--line:#d8dfe9;--body:Nimbus,Arial,sans-serif;--header-height:64px}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-height) + 24px)}
-body{margin:0;color:var(--ink);background:var(--white);font:400 19px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+body{margin:0;color:var(--ink);background:var(--white);font:400 18px/1.65 var(--body);-webkit-font-smoothing:antialiased}
 button,a{-webkit-tap-highlight-color:transparent}
 a{color:inherit;text-underline-offset:4px;text-decoration-thickness:1px}
 a:hover{text-decoration-thickness:2px}
@@ -13,21 +12,21 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offse
 ::selection{color:var(--white);background:var(--blue)}
 h1,h2,h3,h4,p,blockquote,figure,dl,dd,ol{margin:0}
 h1,h2,h3,h4{font-weight:700;text-wrap:balance}
-h2{font-size:clamp(36px,4.1vw,56px);line-height:1.08;letter-spacing:-.045em}
+h2{font-size:clamp(34px,3.8vw,48px);line-height:1.15;letter-spacing:-.035em}
 h3{font-size:30px;line-height:1.18;letter-spacing:-.025em}
 h4{font-size:27px;line-height:1.2;letter-spacing:-.02em}
 p+p{margin-top:20px}
 svg{display:block;flex-shrink:0}
-.wrap{width:min(1184px,calc(100% - 96px));margin-inline:auto}
-.section{padding-block:108px}
-.section-heading{display:grid;grid-template-columns:1.1fr 1fr;gap:88px;align-items:end;margin-bottom:60px}
+.wrap{width:min(1120px,calc(100% - 96px));margin-inline:auto}
+.section{padding-block:88px}
+.section-heading{display:grid;grid-template-columns:1.1fr 1fr;gap:72px;align-items:start;margin-bottom:44px}
 .section-heading h2{max-width:21ch}
-.section-deck{color:var(--muted);font-size:21px;line-height:1.5;max-width:46ch;padding-bottom:3px}
-.lead{font-size:25px;line-height:1.4;letter-spacing:-.015em;color:var(--ink)}
+.section-deck{color:var(--muted);font-size:20px;line-height:1.55;max-width:46ch;padding-top:4px}
+.lead{font-size:23px;line-height:1.5;letter-spacing:-.015em;color:var(--ink)}
 .prose p:not(.lead){color:var(--muted)}
 .prose{max-width:68ch}
 .programme-detail{font-size:16px;line-height:1.5;color:var(--muted)}
-.subsection{margin-top:70px}
+.subsection{margin-top:56px}
 .skip-link{position:fixed;z-index:100;top:10px;left:20px;transform:translateY(-160%);padding:12px 18px;background:var(--blue);color:white;font-size:16px}
 .skip-link:focus{transform:translateY(0)}
 .site-header{position:sticky;top:0;z-index:40;height:var(--header-height);padding-inline:max(32px,calc((100vw - 1280px)/2));display:flex;align-items:center;justify-content:space-between;gap:28px;border-bottom:1px solid var(--line);background:var(--white)}
@@ -39,17 +38,14 @@ svg{display:block;flex-shrink:0}
 .site-header nav a:hover::after,.site-header nav a[aria-current]::after{transform:scaleX(1)}
 .menu-toggle{display:none}
 .hero{min-height:calc(100svh - var(--header-height));display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding-block:76px 108px}
-.hero h1{font-family:var(--display);font-size:clamp(96px,13.2vw,180px);line-height:1.04;letter-spacing:-.075em;color:var(--blue);max-width:100%}
-.hero-lead{font-size:clamp(26px,2.8vw,38px);line-height:1.35;letter-spacing:-.025em;max-width:900px;margin-top:38px}
+.hero h1{font-family:var(--body);font-size:clamp(88px,11vw,148px);line-height:1.05;letter-spacing:-.06em;color:var(--blue);max-width:100%}
+.hero-lead{font-size:clamp(25px,2.6vw,34px);line-height:1.4;letter-spacing:-.02em;max-width:740px;margin-top:30px}
 .programme{background:var(--paper)}
-.section-name{font-size:20px;margin-bottom:34px}
-.programme-quote{max-width:1090px;margin-bottom:64px}
-.programme-quote h2{font-family:var(--display);font-size:clamp(38px,5.8vw,76px);line-height:1.13;letter-spacing:-.055em;text-wrap:pretty}
-.programme-body{display:grid;grid-template-columns:.85fr 1.4fr;gap:100px}
-.programme-body h3{font-size:32px;max-width:22ch}
-.internship{background:var(--blue);color:white;padding:52px;border-radius:4px;scroll-margin-top:24px}
+.programme-body{display:grid;grid-template-columns:1fr 1.15fr;gap:80px;align-items:start}
+.programme-body h2{max-width:16ch;font-size:clamp(35px,3.8vw,48px)}
+.internship{background:var(--blue);color:white;padding:44px;border-radius:12px;scroll-margin-top:24px}
 .internship-heading{display:grid;grid-template-columns:1.05fr 1fr;gap:64px}
-.internship h3{font-size:40px;line-height:1.12;letter-spacing:-.035em}
+.internship h3{font-size:35px;line-height:1.12;letter-spacing:-.035em}
 .internship-heading p{font-size:19px;color:#f1f3ff}
 .stage-path{list-style:none;counter-reset:stage;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;margin-top:44px;padding:32px 0 0;border-top:1px solid #7c8ce0}
 .stage-path li{counter-increment:stage}
@@ -59,6 +55,7 @@ svg{display:block;flex-shrink:0}
 .internship-purpose{font-size:16px;max-width:66ch;margin-top:36px;color:#e8edff}
 .learning-layout{display:grid;grid-template-columns:.85fr 1.4fr;gap:100px}
 .learning-layout>div>p{color:var(--muted);margin-top:22px}
+.learning-layout>div>p:first-child{margin-top:0}
 .learning-layout>div>h3{font-size:33px}
 .learning-roles>div{display:grid;grid-template-columns:155px 1fr;gap:24px;padding-block:22px;border-bottom:1px solid var(--line)}
 .learning-roles>div:first-child{padding-top:0}
@@ -68,7 +65,7 @@ svg{display:block;flex-shrink:0}
 .subsection-heading p{color:var(--muted);margin-top:18px}
 .context-subjects{display:grid;grid-template-columns:1fr 1fr;gap:88px}
 .context-subjects article{padding-top:30px;border-top:2px solid var(--line)}
-.context-subjects h4{font-size:31px;line-height:1.18;margin-bottom:23px}
+.context-subjects h4{font-size:29px;line-height:1.18;margin-bottom:23px}
 .context-subjects p{color:var(--muted)}
 .context-subjects a{color:var(--ink)}
 .education-projects{display:grid;grid-template-columns:.85fr 1.4fr;gap:100px;padding-top:36px;border-top:1px solid var(--line);margin-top:44px}
@@ -76,7 +73,7 @@ svg{display:block;flex-shrink:0}
 .education-projects p{color:var(--muted)}
 .concept{background:var(--paper)}
 .concept-layout{display:grid;grid-template-columns:1.1fr 1fr;gap:88px}
-.concept h2{font-size:clamp(36px,3.8vw,52px)}
+.concept h2{font-size:clamp(34px,3.6vw,46px);max-width:18ch}
 .platform-layout{display:grid;grid-template-columns:1fr 1fr;gap:88px;align-items:start}
 .social-networks article+article{margin-top:42px}
 .social-networks h3{font-size:28px;margin-bottom:20px}
@@ -99,9 +96,11 @@ svg{display:block;flex-shrink:0}
 .branch-content .lead{font-size:24px}
 .quantification{display:grid;grid-template-columns:.85fr 1.4fr;gap:100px;margin-top:50px}
 .quantification h3{font-size:30px}
+.income-foundation{display:grid;grid-template-columns:.85fr 1.4fr;gap:64px;background:var(--paper);padding:32px 36px;border-radius:12px;margin-bottom:40px}
+.income-foundation h3{font-size:29px}
 .currency-routes{display:grid;grid-template-columns:1fr 1fr;gap:88px}
 .currency-routes article{border-top:3px solid var(--blue);padding-top:30px}
-.currency-routes h3{font-size:35px;margin-bottom:25px}
+.currency-routes h3{font-size:31px;margin-bottom:25px}
 .currency-routes p{color:var(--muted)}
 .currency-routes .route-caption{color:var(--blue);font-size:16px;margin-top:28px}
 .currency-stock{display:grid;grid-template-columns:.85fr 1.4fr;gap:100px;margin-top:50px;padding-top:35px;border-top:1px solid var(--line)}
@@ -117,9 +116,12 @@ svg{display:block;flex-shrink:0}
 .harmony-layout{display:grid;grid-template-columns:1.1fr 1fr;gap:88px}
 .harmony-principle{font-size:29px;line-height:1.3;letter-spacing:-.025em;margin-top:32px;color:var(--blue)}
 .democracy{background:var(--paper)}
-.governance-layout{display:grid;grid-template-columns:1fr 1fr;gap:88px}
-.governance-layout h3{font-size:29px;margin-bottom:25px}
-.governance-rule{padding-left:40px;border-left:3px solid var(--blue)}
+.governance-principles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px}
+.governance-principles h3{font-size:27px;line-height:1.25;margin-bottom:22px}
+.governance-principles p{color:var(--muted)}
+.governance-participation,.governance-rule{display:grid;grid-template-columns:.85fr 1.4fr;gap:64px;margin-top:44px}
+.governance-participation h3,.governance-rule h3{font-size:28px}
+.governance-rule{border-top:1px solid var(--line);padding-top:30px}
 .roadmap-list{border-top:1px solid var(--line)}
 .roadmap-phase{display:grid;grid-template-columns:230px 1fr;gap:72px;padding-block:34px;border-bottom:1px solid var(--line)}
 .phase-date span{display:block;font-size:16px;color:var(--muted);margin-bottom:7px}
@@ -145,21 +147,24 @@ svg{display:block;flex-shrink:0}
 .site-header nav.is-open{display:flex}
 .site-header nav a{padding-block:13px}
 .site-header nav a::after{display:none}
-.section{padding-block:80px}
-.section-heading,.concept-layout,.platform-layout,.context-subjects,.harmony-layout,.governance-layout,.currency-routes,.exchange-flows{gap:48px}
+.section{padding-block:72px}
+.section-heading,.concept-layout,.platform-layout,.context-subjects,.harmony-layout,.currency-routes,.exchange-flows{gap:48px}
 .section-heading{margin-bottom:44px}
 .section-deck{font-size:19px}
 .hero{padding-block:72px 96px}
-.hero h1{font-size:clamp(90px,13.4vw,140px)}
-.hero-lead{font-size:31px;max-width:740px}
-.programme-quote{margin-bottom:48px}
+.hero h1{font-size:clamp(86px,11.5vw,120px)}
+.hero-lead{font-size:29px;max-width:680px}
 .programme-body,.learning-layout,.education-projects,.platform-contribution,.video-branch,.quantification,.currency-stock,.exchange-transition{gap:48px;grid-template-columns:.9fr 1.2fr}
-.programme-body h3{font-size:28px}
+.programme-body h2{font-size:38px}
 .internship{padding:36px}
 .internship-heading{gap:36px}
 .internship h3{font-size:32px}
 .internship-heading p{font-size:18px}
 .stage-path{gap:25px}
+.governance-principles{grid-template-columns:1fr;gap:30px}
+.governance-principles article{max-width:70ch}
+.governance-participation,.governance-rule{grid-template-columns:1fr;gap:24px}
+.income-foundation{gap:36px;padding:28px}
 .stage-path h4{font-size:20px}
 .learning-roles>div{grid-template-columns:1fr;gap:8px}
 .personal-page{padding-left:28px}
@@ -167,14 +172,14 @@ svg{display:block;flex-shrink:0}
 }
 @media(max-width:720px){
 :root{--header-height:60px}
-body{font-size:18px;line-height:1.55}
+body{font-size:18px;line-height:1.6}
 .wrap{width:calc(100% - 40px)}
 .site-header{padding-inline:20px;gap:12px}
 .brand{font-size:18px;gap:8px}
 .brand svg{width:27px;height:27px}
 .site-header nav{padding-inline:20px}
-.section{padding-block:62px}
-h2{font-size:37px;line-height:1.12;letter-spacing:-.04em}
+.section{padding-block:52px}
+h2{font-size:34px;line-height:1.18;letter-spacing:-.03em}
 h3{font-size:28px}
 .section-heading{grid-template-columns:1fr;gap:23px;margin-bottom:34px}
 .section-heading h2{max-width:24ch}
@@ -182,13 +187,10 @@ h3{font-size:28px}
 .lead{font-size:23px;line-height:1.4}
 .prose{max-width:100%}
 .hero{padding-block:56px 74px}
-.hero h1{font-size:clamp(88px,20vw,126px);line-height:1.02;letter-spacing:-.075em;max-width:8ch;text-wrap:initial}
+.hero h1{font-size:clamp(78px,17.5vw,112px);line-height:1.04;letter-spacing:-.055em;max-width:100%;text-wrap:balance}
 .hero-lead{font-size:26px;line-height:1.35;letter-spacing:-.025em;max-width:520px;margin-top:30px}
-.section-name{font-size:18px;margin-bottom:26px}
-.programme-quote{margin-bottom:35px}
-.programme-quote h2{font-size:clamp(36px,8.2vw,52px);line-height:1.14;letter-spacing:-.05em}
-.programme-body,.learning-layout,.education-projects,.concept-layout,.platform-layout,.platform-contribution,.video-branch,.quantification,.currency-stock,.exchange-transition,.harmony-layout,.governance-layout{grid-template-columns:1fr;gap:26px}
-.programme-body h3{font-size:29px;max-width:100%}
+.programme-body,.learning-layout,.education-projects,.concept-layout,.platform-layout,.platform-contribution,.video-branch,.quantification,.currency-stock,.exchange-transition,.harmony-layout{grid-template-columns:1fr;gap:26px}
+.programme-body h2{font-size:35px;max-width:20ch}
 .internship{padding:30px 25px;scroll-margin-top:12px}
 .internship-heading{grid-template-columns:1fr;gap:25px}
 .internship h3{font-size:31px;line-height:1.14}
@@ -212,7 +214,7 @@ h3{font-size:28px}
 .context-subjects h4{font-size:28px;margin-bottom:20px}
 .education-projects{margin-top:32px;padding-top:28px;gap:20px}
 .education-projects h3{font-size:27px}
-.concept h2{font-size:36px}
+.concept h2{font-size:34px}
 .concept h2 br:last-child{display:none}
 .platform-layout{gap:32px}
 .social-networks article+article{margin-top:30px}
@@ -227,6 +229,8 @@ h3{font-size:28px}
 .branch-content .lead{font-size:23px}
 .quantification{margin-top:32px}
 .quantification h3{font-size:29px}
+.income-foundation{grid-template-columns:1fr;gap:22px;padding:26px 23px;margin-bottom:32px}
+.income-foundation h3{font-size:28px}
 .currency-routes{grid-template-columns:1fr;gap:32px}
 .currency-routes article{padding-top:25px}
 .currency-routes h3{font-size:31px;margin-bottom:22px}
@@ -240,9 +244,10 @@ h3{font-size:28px}
 .exchange-transition{margin-top:36px;gap:22px}
 .exchange-transition h3{font-size:28px}
 .harmony-principle{font-size:27px;margin-top:24px}
-.governance-layout{gap:32px}
-.governance-layout h3{font-size:28px;margin-bottom:22px}
-.governance-rule{padding-left:23px}
+.governance-principles{grid-template-columns:1fr;gap:28px}
+.governance-principles h3{font-size:27px;margin-bottom:16px}
+.governance-participation,.governance-rule{grid-template-columns:1fr;gap:22px;margin-top:32px}
+.governance-participation h3,.governance-rule h3{font-size:27px}
 .roadmap-phase{grid-template-columns:1fr;gap:19px;padding-block:28px}
 .phase-date{display:flex;align-items:baseline;flex-wrap:wrap;gap:11px}
 .phase-date span{font-size:15px;margin:0}
@@ -262,8 +267,8 @@ h3{font-size:28px}
 .site-header .brand{font-size:17px}
 .menu-toggle{padding:8px}
 .menu-toggle>span{display:none}
-.hero h1{font-size:clamp(82px,22vw,92px)}
-.hero-lead{font-size:24px}
+.hero h1{font-size:clamp(72px,20vw,84px)}
+.hero-lead{font-size:24px;max-width:22ch}
 .internship{padding-inline:23px}
 .learning-roles>div{grid-template-columns:1fr;gap:7px}
 .phase-highlight{margin-left:-15px;padding-left:12px}
@@ -283,15 +288,15 @@ body{font-size:11pt;color:#000}
 h2{font-size:25pt}h3,h4{font-size:18pt}
 .section-heading{margin-bottom:24px;gap:30px}
 .section-deck,.lead{font-size:14pt}
-.programme-quote h2{font-size:31pt}
-.programme-quote{margin-bottom:25px}
 .internship{color:#000;background:#f1f3f9;padding:25px}
 .internship h3{font-size:23pt}
 .internship p,.internship-heading p,.stage-path p,.stage-path li::before{color:#000;font-size:11pt}
 .stage-path h4{font-size:15pt}
 .subsection{margin-top:30px}
 .programme-body,.learning-layout,.education-projects,.platform-contribution,.video-branch,.quantification,.currency-stock,.exchange-transition{gap:30px}
-.video-branch,.roadmap-phase,.context-subjects article,.currency-routes article{break-inside:avoid}
+.video-branch,.roadmap-phase,.context-subjects article,.currency-routes article,.governance-principles article{break-inside:avoid}
+.governance-principles{grid-template-columns:1fr}
+.income-foundation{background:white;padding:20px 0;gap:30px}
 .footer-top{margin-bottom:20px}.footer-motto{font-size:24pt}
 .site-footer{background:white;padding-block:25px}
 }

@@ -12,6 +12,8 @@ Le programme propose la psychologie dès le lycée, un enseignement approfondi d
 
 La partie monétaire propose aussi une pondération selon le contexte d’émission de chaque unité, liée au stock actuel et au stock lors de sa création. La formule et son articulation avec les échanges et les prix restent à définir.
 
+Le revenu universel constitue la base proposée, et générer de l’expansion harmonieuse reste une démarche volontaire apportant un complément. La gouvernance croise connaissance du sujet, harmonie dans les actes et cohérence des arguments. Les contre-arguments doivent pouvoir conduire l’algorithme à réviser son fonctionnement.
+
 Les mécanismes présentés sont des propositions du programme. Aucun utilisateur, projet réel, score d’harmonie, revenu ou résultat économique n’est simulé.
 
 ## Publication
