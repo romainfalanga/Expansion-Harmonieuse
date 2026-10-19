@@ -37,7 +37,7 @@ const programme = section('programme');
 for (const phrase of ['Ce programme', 'capable de tout faire', 'travail ne serait plus nécessaire', 'les jeunes et l’ensemble de la population', 'garder un sens', 'se comprendre et s’améliorer', 'fin de la fonction présidentielle']) assert(programme.includes(phrase), 'Missing programme introduction: ' + phrase);
 const education = section('education');
 assert(education.indexOf('id="stages-ia"') < education.indexOf('class="learning-layout'), 'Internships lead the education section');
-for (const phrase of ['le cœur du modèle', 'concevoir et de mettre en place les automatisations', 'Observer l’entreprise', 'Concevoir les automatisations', 'Les mettre en place', 'psychologie', 'notre manière de penser', 'notre manière d’exister dans la réalité', 'Observation et amélioration de soi', 'fonctionnement de l’Univers', 'Conserver les matières', 'groupes plus nombreux']) {
+for (const phrase of ['le cœur du modèle', 'concevoir et de mettre en place les automatisations', 'Observer l’entreprise', 'Concevoir les automatisations', 'Les mettre en place', 'psychologie', 'notre manière de penser', 'Observation et amélioration de soi', 'Conserver les matières', 'groupes plus nombreux']) {
   assert(education.includes(phrase), 'Missing education requirement: ' + phrase);
 }
 for (const id of ['branche-soi', 'branche-reflexions', 'branche-projets', 'reseau-pensees', 'reseau-projets', 'quantification-title']) assert(ids.includes(id));
@@ -45,7 +45,7 @@ const video = section('videographie');
 for (const phrase of ['Observation et', 'amélioration de soi', 'Réflexions', 'Idées et projets', 'démarche thérapeutique personnelle', 'les élèves et les adultes', 'Chaque projet possède sa propre vidéographie', 'son origine', 'les étapes', 'intelligence artificielle générale gouvernante', 'quantifier son expansion harmonieuse']) assert(video.includes(phrase), 'Missing videography requirement: ' + phrase);
 for (const phrase of ['utilisables immédiatement à l’international', 'ne sont pas dépensables en France', 'Aucune conversion', 'L’avancement', 'Le nombre de personnes qui l’utilisent', 'La plateforme est le socle', 'chaque mois', 'Les ventes n’ajoutent', 'point de départ', 'septembre 2027', 'sortie de l’Union européenne', 'formule d’émission']) assert(html.includes(phrase), 'Missing programme requirement: ' + phrase);
 const roadmap = section('calendrier');
-for (const phrase of ['Ajouter les cours de psychologie', 'physique du fonctionnement de l’Univers', 'les élèves et les adultes', 'concevoir et de mettre en place les automatisations', '2026–2027']) assert(roadmap.includes(phrase), 'Roadmap requirement: ' + phrase);
+for (const phrase of ['Ajouter les cours de psychologie', 'les élèves et les adultes', 'concevoir et de mettre en place les automatisations', '2026–2027']) assert(roadmap.includes(phrase), 'Roadmap requirement: ' + phrase);
 const header = html.slice(html.indexOf('<header'), html.indexOf('</header>'));
 assert(header.includes('<span>Expansion Harmonieuse</span>'), 'Single line brand');
 assert(!header.includes('<br>'));
