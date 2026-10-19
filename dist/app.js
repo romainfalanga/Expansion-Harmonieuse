@@ -4,42 +4,25 @@
   const navigation = document.querySelector('#navigation');
   if (!menuButton || !navigation) return;
 
-  const closeMenu = () => {
-    navigation.classList.remove('is-open');
-    menuButton.setAttribute('aria-expanded', 'false');
+  const setMenu = open => {
+    navigation.classList.toggle('is-open', open);
+    menuButton.setAttribute('aria-expanded', String(open));
+    menuButton.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
   };
   menuButton.addEventListener('click', () => {
-    const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
-    navigation.classList.toggle('is-open', !isOpen);
-    menuButton.setAttribute('aria-expanded', String(!isOpen));
+    setMenu(menuButton.getAttribute('aria-expanded') !== 'true');
   });
-  navigation.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+  navigation.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setMenu(false)));
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && menuButton.getAttribute('aria-expanded') === 'true') {
-      closeMenu();
+      setMenu(false);
       menuButton.focus();
     }
   });
   document.addEventListener('click', event => {
-    if (!navigation.contains(event.target) && !menuButton.contains(event.target)) closeMenu();
+    if (!navigation.contains(event.target) && !menuButton.contains(event.target)) setMenu(false);
   });
-  const desktop = window.matchMedia('(min-width: 1021px)');
-  desktop.addEventListener('change', event => { if (event.matches) closeMenu(); });
-
-  if ('IntersectionObserver' in window) {
-    const links = Array.from(navigation.querySelectorAll('a[href^="#"]'));
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        links.forEach(link => {
-          if (link.getAttribute('href') === `#${entry.target.id}`) link.setAttribute('aria-current', 'location');
-          else link.removeAttribute('aria-current');
-        });
-      });
-    }, { rootMargin: '-20% 0px -55% 0px', threshold: 0 });
-    links.forEach(link => {
-      const section = document.querySelector(link.getAttribute('href'));
-      if (section) observer.observe(section);
-    });
-  }
+  window.matchMedia('(min-width: 1021px)').addEventListener('change', event => {
+    if (event.matches) setMenu(false);
+  });
 })();
